@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Pet Shop</title>
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Crie sua conta</h1>
+                <p>Preencha os campos abaixo para se cadastrar</p>
+            </div>
+            
+            <form id="registerForm" class="auth-form" action="/api/register" method="post">
+                <div class="form-group">
+                    <label for="username">Usuário</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="username" placeholder="Escolha um nome de usuário" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" name="email" placeholder="Digite seu e-mail" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="password" id="regPassword" placeholder="Crie uma senha" required>
+                        <i class="fas fa-eye toggle-password" onclick="togglePassword('regPassword')"></i>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">Confirme a Senha</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Repita a senha" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+                
+                <div class="auth-footer">
+                    <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(id) {
+            const password = document.getElementById(id);
+            const icon = password.nextElementSibling;
+            if (password.type === 'password') {
+                password.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                password.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+    </script>
+</body>
+</html>

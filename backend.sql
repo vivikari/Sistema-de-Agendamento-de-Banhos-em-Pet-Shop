@@ -1,0 +1,29 @@
+CREATE DATABASE crud_aula2;
+USE crud_aula2;
+
+CREATE TABLE items(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT
+);
+
+CREATE TABLE images(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    filename VARCHAR(255) NOT NULL,
+    filepath VARCHAR(255) NOT NULL,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE users(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+SHOW TABLES;
+DESCRIBE items;
+DESCRIBE images;
+DESCRIBE users;
+SELECT * FROM items;
+SELECT * FROM images;
+SELECT * FROM users;
