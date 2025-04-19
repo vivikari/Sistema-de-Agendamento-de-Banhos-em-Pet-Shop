@@ -326,3 +326,73 @@ body {
         width: 100%;
     }
 }
+
+:root {
+    --primary: #6e48aa;
+    --secondary: #9d50bb;
+    --light: #f8f9fa;
+  }
+  
+  .agendamento-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  
+  .servicos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  
+  .servico-option input[type="radio"] {
+    display: none;
+  }
+  
+  .servico-option label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .servico-option input:checked + label {
+    border-color: var(--primary);
+    background: rgba(110, 72, 170, 0.05);
+  }
+  
+  .upload-area {
+    border: 2px dashed #ccc;
+    padding: 2rem;
+    text-align: center;
+    border-radius: 10px;
+  }
+  
+  #preview-foto {
+    max-width: 200px;
+    max-height: 200px;
+    margin-top: 1rem;
+    display: none;
+  }
+  
+  .btn-agendar {
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  
+  .btn-agendar:hover {
+    transform: translateY(-3px);
+  }

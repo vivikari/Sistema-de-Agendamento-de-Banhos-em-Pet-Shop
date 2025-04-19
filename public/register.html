@@ -3,73 +3,448 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro - Pet Shop</title>
-    <link rel="stylesheet" href="css/auth.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Cadastro | PetShop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6e48aa;
+            --secondary: #9d50bb;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+            --danger: #dc3545;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .auth-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .auth-header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .auth-logo {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .auth-title {
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .auth-body {
+            padding: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(110, 72, 170, 0.2);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            cursor: pointer;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(110, 72, 170, 0.3);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .auth-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Mensagens de erro */
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Validação de senha */
+        .password-strength {
+            height: 4px;
+            background: #eee;
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        
+        .strength-bar {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s;
+        }
+        
+        .strength-weak {
+            background: var(--danger);
+            width: 33%;
+        }
+        
+        .strength-medium {
+            background: #ffb74d;
+            width: 66%;
+        }
+        
+        .strength-strong {
+            background: #4caf50;
+            width: 100%;
+        }
+
+        /* Termos */
+        .terms-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .terms-checkbox {
+            margin-top: 3px;
+        }
+
+        .terms-text {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        /* Responsividade */
+        @media (max-width: 480px) {
+            .auth-header {
+                padding: 20px;
+            }
+            
+            .auth-body {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
-                <h1>Crie sua conta</h1>
-                <p>Preencha os campos abaixo para se cadastrar</p>
+                <div class="auth-logo">PetShop</div>
+                <div class="auth-title">Crie sua conta gratuita</div>
             </div>
             
-            <form id="registerForm" class="auth-form" action="/api/register" method="post">
-                <div class="form-group">
-                    <label for="username">Usuário</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-user"></i>
-                        <input type="text" name="username" placeholder="Escolha um nome de usuário" required>
-                    </div>
-                </div>
+            <div class="auth-body">
+                <div id="message" class="alert alert-error"></div>
                 
-                <div class="form-group">
-                    <label for="email">E-mail</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" name="email" placeholder="Digite seu e-mail" required>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="name" class="form-label">Nome Completo</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user input-icon"></i>
+                            <input type="text" id="name" class="form-control" placeholder="Seu nome completo" required>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Senha</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" name="password" id="regPassword" placeholder="Crie uma senha" required>
-                        <i class="fas fa-eye toggle-password" onclick="togglePassword('regPassword')"></i>
+                    
+                    <div class="form-group">
+                        <label for="email" class="form-label">E-mail</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="email" class="form-control" placeholder="seu@email.com" required>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="confirmPassword">Confirme a Senha</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Repita a senha" required>
+                    
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Telefone</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-phone input-icon"></i>
+                            <input type="tel" id="phone" class="form-control" placeholder="(00) 00000-0000" required>
+                        </div>
                     </div>
-                </div>
-                
-                <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+                    
+                    <div class="form-group">
+                        <label for="password" class="form-label">Senha</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="password" class="form-control" placeholder="Mínimo 6 caracteres" required minlength="6">
+                            <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+                        </div>
+                        <div class="password-strength">
+                            <div id="strengthBar" class="strength-bar"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword" class="form-label">Confirme a Senha</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="confirmPassword" class="form-control" placeholder="Digite novamente" required>
+                        </div>
+                    </div>
+                    
+                    <div class="terms-container">
+                        <input type="checkbox" id="terms" class="terms-checkbox" required>
+                        <label for="terms" class="terms-text">
+                            Eu concordo com os <a href="#" class="auth-link">Termos de Serviço</a> e <a href="#" class="auth-link">Política de Privacidade</a>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i>
+                        Criar Conta
+                    </button>
+                </form>
                 
                 <div class="auth-footer">
-                    <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
+                    Já tem uma conta? <a href="login.html" class="auth-link">Faça login</a>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 
     <script>
-        function togglePassword(id) {
-            const password = document.getElementById(id);
-            const icon = password.nextElementSibling;
-            if (password.type === 'password') {
-                password.type = 'text';
-                icon.classList.replace('fa-eye', 'fa-eye-slash');
-            } else {
-                password.type = 'password';
-                icon.classList.replace('fa-eye-slash', 'fa-eye');
-            }
+        // Função para mostrar mensagens de erro
+        function showError(message) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = message;
+            messageDiv.style.display = 'block';
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
         }
+
+        // Toggle para mostrar/esconder senha
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this;
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // Validação de força da senha em tempo real
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const strengthBar = document.getElementById('strengthBar');
+            
+            // Reset
+            strengthBar.className = 'strength-bar';
+            
+            if (password.length === 0) return;
+            
+            // Calcula força (simplificado)
+            let strength = 0;
+            
+            // Critérios de força
+            if (password.length >= 6) strength += 1;
+            if (password.length >= 8) strength += 1;
+            if (/[A-Z]/.test(password)) strength += 1;
+            if (/[0-9]/.test(password)) strength += 1;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+            
+            // Atualiza visual
+            if (strength <= 2) {
+                strengthBar.classList.add('strength-weak');
+            } else if (strength <= 4) {
+                strengthBar.classList.add('strength-medium');
+            } else {
+                strengthBar.classList.add('strength-strong');
+            }
+        });
+
+        // Máscara para telefone
+        document.getElementById('phone').addEventListener('input', function(e) {
+            const x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+            e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+        });
+
+        // Validação do formulário
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Coleta dados
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const termsChecked = document.getElementById('terms').checked;
+            
+            // Validações básicas
+            if (!name || !email || !phone || !password || !confirmPassword) {
+                return showError('Preencha todos os campos obrigatórios');
+            }
+            
+            if (!termsChecked) {
+                return showError('Você deve aceitar os termos de serviço');
+            }
+            
+            if (password !== confirmPassword) {
+                return showError('As senhas não coincidem');
+            }
+            
+            if (password.length < 6) {
+                return showError('A senha deve ter pelo menos 6 caracteres');
+            }
+            
+            // Limpa mensagens de erro
+            document.getElementById('message').style.display = 'none';
+            
+            try {
+                // Mostrar loading (opcional)
+                const submitBtn = e.target.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Criando conta...';
+                submitBtn.disabled = true;
+                
+                // Envia para o backend
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        name, 
+                        email, 
+                        phone: phone.replace(/\D/g, ''), // Remove formatação
+                        password 
+                    })
+                });
+                
+                // Restaura botão
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    return showError(error.message || 'Erro ao cadastrar');
+                }
+                
+                const data = await response.json();
+                
+                // Salva token e redireciona
+                localStorage.setItem('token', data.token);
+                window.location.href = 'private.html';
+                
+            } catch (error) {
+                console.error('Erro:', error);
+                showError('Erro de conexão com o servidor');
+                
+                // Restaura botão em caso de erro
+                const submitBtn = e.target.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> Criar Conta';
+                submitBtn.disabled = false;
+            }
+        });
     </script>
 </body>
 </html>
