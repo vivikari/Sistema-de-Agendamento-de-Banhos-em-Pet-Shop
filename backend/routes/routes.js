@@ -4,6 +4,9 @@ import authRoutes from './authRoutes.js'
 import upload from '../uploadConfig.js'  
 import fs from 'fs'
 import path from 'path'
+import authMiddleware from './authMiddleware.js'
+
+router.use(authMiddleware)
 
 
 const router = express.Router()
