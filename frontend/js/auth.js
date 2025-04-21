@@ -36,4 +36,3 @@ async function acessar() {
 function logout() {
     window.location.href = '/login.html'   
   }
-  
