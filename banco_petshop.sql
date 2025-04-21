@@ -78,8 +78,7 @@ CREATE TABLE agendamentos (
     FOREIGN KEY (servico_id) REFERENCES servicos(id),
     FOREIGN KEY (status_id) REFERENCES status_agendamento(id),
     INDEX idx_agendamento_data (data_agendamento),
-    INDEX idx_agendamento_status (status_id),
-    CONSTRAINT chk_data_futura CHECK (data_agendamento > NOW())
+    INDEX idx_agendamento_status (status_id)
 ) ENGINE=InnoDB;
 
 -- Tabela de fotos (com melhor controle)
@@ -93,14 +92,14 @@ CREATE TABLE pet_fotos (
     
     FOREIGN KEY (pet_id) REFERENCES pets(id) ON DELETE CASCADE,
     INDEX idx_foto_pet (pet_id),
-    UNIQUE uk_foto_principal (pet_id, is_principal) WHERE is_principal = TRUE
+    UNIQUE uk_foto_principal (pet_id, is_principal)
 ) ENGINE=InnoDB;
 
 -- Tabela de histórico (para auditoria)
 CREATE TABLE agendamento_historico (
     id INT AUTO_INCREMENT PRIMARY KEY,
     agendamento_id INT NOT NULL,
-    status_anterior_id INT,
+    status_anterior_id INT NULL,  -- Alterado para permitir NULL
     status_novo_id INT NOT NULL,
     observacao TEXT,
     usuario_id INT COMMENT 'Quem fez a alteração',
