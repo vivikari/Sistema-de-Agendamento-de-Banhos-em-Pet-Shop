@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Conta | PetShop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6e48aa;
+            --secondary: #9d50bb;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Seção principal */
+        .main-content {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            height: fit-content;
+        }
+
+        .nav-menu {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .nav-item {
+            margin-bottom: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--gray);
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(110, 72, 170, 0.1);
+            color: var(--primary);
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Conteúdo */
+        .content {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            color: var(--dark);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(110, 72, 170, 0.3);
+        }
+
+        /* Cards de boas-vindas */
+        .welcome-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .welcome-card {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--primary);
+        }
+
+        .welcome-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .welcome-card p {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* Seção de pets */
+        .pets-section {
+            margin-top: 30px;
+        }
+
+        .pets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .pet-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .pet-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(110, 72, 170, 0.1);
+        }
+
+        .pet-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .pet-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #eee;
+        }
+
+        .pet-name {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .pet-breed {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .pet-details {
+            margin-top: 15px;
+        }
+
+        .detail-item {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .detail-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .detail-value {
+            font-weight: 500;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .welcome-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">PetShop</div>
+            <div class="user-menu">
+                <span id="usernameDisplay">Olá, Usuário</span>
+                <div class="avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="private.html" class="nav-link active">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="agendamentos.html" class="nav-link">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Agendamentos</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-paw"></i>
+                            <span>Meus Pets</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-user"></i>
+                            <span>Minha Conta</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Sair</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+
+            <!-- Conteúdo principal -->
+            <main class="content">
+                <div class="page-header">
+                    <h1 class="page-title">Minha Conta</h1>
+                    <button class="btn btn-primary" onclick="acessar()">
+                        <i class="fas fa-lock"></i>
+                        Área Protegida
+                    </button>
+                </div>
+
+                <!-- Cards de boas-vindas -->
+                <div class="welcome-cards">
+                    <div class="welcome-card">
+                        <h3>Bem-vindo de volta!</h3>
+                        <p>Aqui você pode gerenciar seus agendamentos, pets e informações da conta.</p>
+                    </div>
+                    <div class="welcome-card">
+                        <h3>Próximos Agendamentos</h3>
+                        <p>Você tem <strong>2 agendamentos</strong> confirmados para esta semana.</p>
+                    </div>
+                </div>
+
+                <!-- Seção de pets -->
+                <div class="pets-section">
+                    <h2 style="color: var(--dark); margin-bottom: 15px;">Meus Pets</h2>
+                    <div class="pets-grid" id="meusPets">
+                        <!-- Dinâmico -->
+                    </div>
+                </div>
+
+                <!-- Área protegida -->
+                <div id="dados" style="margin-top: 30px; display: none;">
+                    <div class="welcome-card">
+                        <h3>Suas Informações</h3>
+                        <div id="userInfo"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Carrega o nome do usuário do token
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            if(token) {
+                try {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
+                    if(payload.name) {
+                        document.getElementById('usernameDisplay').textContent = `Olá, ${payload.name}`;
+                    }
+                } catch (e) {
+                    console.error('Erro ao decodificar token:', e);
+                    logout();
+                }
+            } else {
+                // Se não tiver token, redireciona para login
+                window.location.href = 'login.html';
+            }
+            
+            // Simulação de pets (será substituído por chamada API)
+            const pets = [
+                { 
+                    nome: "Rex", 
+                    raca: "Golden Retriever", 
+                    idade: "3 anos",
+                    ultimoBanho: "10/10/2023",
+                    imagem: "https://images.unsplash.com/photo-1586671267731-da2cf3ceeb80?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80"
+                },
+                { 
+                    nome: "Luna", 
+                    raca: "Siamês", 
+                    idade: "2 anos",
+                    ultimoBanho: "05/10/2023",
+                    imagem: "https://images.unsplash.com/photo-1594149929911-78975a43d4f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80"
+                }
+            ];
+            
+            const petsHTML = pets.map(pet => `
+                <div class="pet-card">
+                    <div class="pet-header">
+                        <img src="${pet.imagem}" alt="${pet.nome}" class="pet-avatar">
+                        <div>
+                            <h3 class="pet-name">${pet.nome}</h3>
+                            <p class="pet-breed">${pet.raca}</p>
+                        </div>
+                    </div>
+                    <div class="pet-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Idade</span>
+                            <span class="detail-value">${pet.idade}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Último banho</span>
+                            <span class="detail-value">${pet.ultimoBanho}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('meusPets').innerHTML = petsHTML;
+        });
+
+        // Função para acessar conteúdo protegido
+        function acessar() {
+            const token = localStorage.getItem('token');
+            if(!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Simulação de chamada protegida
+            fetch('/api/protected', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if(!response.ok) throw new Error('Não autorizado');
+                return response.json();
+            })
+            .then(data => {
+                const dadosDiv = document.getElementById('dados');
+                const userInfoDiv = document.getElementById('userInfo');
+                
+                userInfoDiv.innerHTML = `
+                    <p><strong>Nome:</strong> ${document.getElementById('usernameDisplay').textContent.replace('Olá, ', '')}</p>
+                    <p><strong>Email:</strong> ${data.email || 'usuario@exemplo.com'}</p>
+                    <p><strong>Telefone:</strong> ${data.phone || '(00) 00000-0000'}</p>
+                    <p><strong>Membro desde:</strong> ${new Date().toLocaleDateString()}</p>
+                `;
+                
+                dadosDiv.style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Sessão expirada. Faça login novamente.');
+                logout();
+            });
+        }
+
+        // Função de logout
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
