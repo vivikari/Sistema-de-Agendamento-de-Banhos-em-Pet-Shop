@@ -22,12 +22,11 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) =>{
 //ROTA PRIVADA
 async function acessar() {
     const token = localStorage.getItem('token')
-    const res = await fetch('/api/private',{ // inserir / antes da api
+    const res = await fetch('/api/private',{ 
         headers:{Authorization: `Bearer ${token}`}
     })
-    // const msg = await res.text()  tirar
-    const data = await res.json() // declaração da variável
-    document.getElementById('dados').innerText = data.message //trocar =msg por data.message
+    const data = await res.json() 
+    document.getElementById('dados').innerText = data.message 
 
     console.log('Token enviado:', token)
 }

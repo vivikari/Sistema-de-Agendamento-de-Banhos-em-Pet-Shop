@@ -15,7 +15,7 @@ const dbConfig = {
   timezone: '+00:00' // Para evitar problemas com fusos horários
 };
 
-// Cria o pool diretamente (mais eficiente que criar conexão teste)
+// Cria o pool diretamente
 const db = mysql.createPool(dbConfig);
 
 // Adiciona handlers para monitoramento
@@ -54,7 +54,7 @@ export async function testConnection() {
   }
 }
 
-// Verifica a conexão ao iniciar (opcional)
+// Verifica a conexão ao iniciar 
 if (process.env.NODE_ENV !== 'test') {
   testConnection();
 }

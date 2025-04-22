@@ -177,7 +177,7 @@ router.put('/:id', authMiddleware, upload.single('imagem'), async (req, res) => 
         let imagem_path = agendamento.imagem_path;
         if (req.file) {
             imagem_path = `/uploads/${req.file.filename}`;
-            // Opcional: excluir a imagem antiga do sistema de arquivos
+            
         }
 
         // Atualizar no banco de dados
@@ -235,8 +235,6 @@ router.delete('/:id', authMiddleware, async (req, res) => {
                 error: 'Agendamento já concluído não pode ser cancelado' 
             });
         }
-
-        // Opcional: excluir a imagem associada do sistema de arquivos
 
         // Atualizar status para cancelado (soft delete)
         await db.execute(

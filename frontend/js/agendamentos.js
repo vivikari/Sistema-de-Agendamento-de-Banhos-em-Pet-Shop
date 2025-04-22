@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // DOM Elements
     const form = document.getElementById('agendamentoForm');
     const petImagemInput = document.getElementById('petImagem');
     const btnSelecionarImagem = document.getElementById('btnSelecionarImagem');
@@ -8,11 +7,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const servicosContainer = document.getElementById('servicosContainer');
     const messageDiv = document.getElementById('message');
 
-    // State variables
     let selectedServico = null;
     let petImageFile = null;
 
-    // Initialize
+    // Iniciar
     initDatePicker();
     loadServicos();
     setupEventListeners();
@@ -46,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const formData = new FormData(form);
             formData.append('servicoId', selectedServico.id);
             
-            // Debug: Log form data
+            // Debug
             for (let [key, value] of formData.entries()) {
                 console.log(`${key}:`, value instanceof File ? `${value.name} (${value.size} bytes)` : value);
             }
@@ -58,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`
-                    // Let browser set Content-Type for FormData
+                   
                 },
                 body: formData
             });
@@ -90,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const file = e.target.files[0];
         if (!file) return;
         
-        // Validation
+        // Validação
         if (!file.type.match('image/(jpeg|png)')) {
             showMessage('Apenas imagens JPEG ou PNG são permitidas', 'error');
             return;
@@ -120,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
         btnRemoverImagem.disabled = true;
     }
 
-    // Load services
+    // Load serviços
     async function loadServicos() {
         try {
             const response = await fetch('/api/servicos');
@@ -142,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `).join('');
 
-        // Add click events
+        // Eventos
         document.querySelectorAll('.servico-card').forEach(card => {
             card.addEventListener('click', function() {
                 document.querySelectorAll('.servico-card').forEach(c => c.classList.remove('selected'));
@@ -181,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return true;
     }
 
-    // UI helpers
+    // UI feedback
     function showMessage(message, type) {
         messageDiv.textContent = message;
         messageDiv.className = `alert ${type}`;

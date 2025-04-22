@@ -29,7 +29,7 @@ document.getElementById('uploadForm').addEventListener('submit', async (e) => {
     e.target.reset()
     loadImages()
 })
-
+//Carrega as imagens na página
 async function loadImages() {
     const res = await fetch(API_URL)
     const images = await res.json()

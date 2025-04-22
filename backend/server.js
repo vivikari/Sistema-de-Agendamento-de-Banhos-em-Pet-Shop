@@ -6,7 +6,7 @@ const app = express();
 
 // Middlewares essenciais
 app.use(cors({
-    origin: 'http://localhost:5500', // Ajuste para a porta do seu frontend
+    origin: 'http://localhost:5500',
     credentials: true
 }));
 app.use(express.json());
