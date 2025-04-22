@@ -34,5 +34,17 @@ async function acessar() {
 
 //DESLOGAR
 function logout() {
-    window.location.href = '/login.html'   
-  }
+    // Limpar todos os dados de sessão
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    
+    // Opcional: invalidar token no servidor
+    fetch('/api/logout', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    }).catch(() => {}); // Não tratar erros
+    
+    window.location.href = '/login.html';
+}
