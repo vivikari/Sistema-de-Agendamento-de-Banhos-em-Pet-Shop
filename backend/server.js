@@ -1,15 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import db from './db.js';
 import upload from './uploadConfig.js';
-
 import authRoutes from './routes/authRoutes.js';
-import petsRoutes from './routes/petsRoutes.js';
 import agendamentoRoutes from './routes/agendamentoRoutes.js';
-import imagesRoutes from './routes/imagesRoutes.js';
 
 const app = express();
-const port = 3000;
 
 // Middlewares
 app.use(cors());
@@ -18,9 +13,7 @@ app.use('/uploads', express.static('uploads'));
 
 // Rotas
 app.use('/auth', authRoutes);        // Login e Registro
-app.use('/pets', petsRoutes);         // Cadastro e listagem de pets
-app.use('/agendamentos', agendamentoRoutes); // Agendamentos protegidos
-app.use('/images', imagesRoutes);     // Upload e gestão de imagens
+app.use('/agendamentos', agendamentoRoutes); // Agendamentos protegidos 
 
 // Página de status simples
 app.get('/', (req, res) => {
@@ -28,6 +21,7 @@ app.get('/', (req, res) => {
 });
 
 // Iniciar servidor
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`🚀 Servidor rodando em http://localhost:${port}`);
 });

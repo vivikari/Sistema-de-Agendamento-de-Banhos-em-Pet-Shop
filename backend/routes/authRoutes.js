@@ -7,101 +7,47 @@ import dotenv from 'dotenv';
 dotenv.config();
 const router = express.Router();
 
-// Registro
+// Registro simplificado
 router.post('/register', async (req, res) => {
-  const { email, senha, nome, telefone } = req.body;
-
   try {
-    if (!email || !senha || !nome) {
-      return res.status(400).json({
-        success: false,
-        error: 'Email, senha e nome são obrigatórios'
-      });
-    }
-
-    // Verificar se já existe
-    const [existing] = await db.execute(
-      'SELECT * FROM usuarios WHERE email = ?',
-      [email]
-    );
-
+    const { email, senha, nome } = req.body;
+    const [existing] = await db.execute('SELECT * FROM usuarios WHERE email = ?', [email]);
+    
     if (existing.length > 0) {
-      return res.status(400).json({
-        success: false,
-        error: 'Email já registrado'
-      });
+      return res.status(400).json({ error: 'Email já registrado' });
     }
 
     const senhaHash = await bcrypt.hash(senha, 10);
-
     await db.execute(
-      'INSERT INTO usuarios (email, senha_hash, nome, telefone) VALUES (?, ?, ?, ?)',
-      [email, senhaHash, nome, telefone]
+      'INSERT INTO usuarios (email, senha_hash, nome) VALUES (?, ?, ?)',
+      [email, senhaHash, nome]
     );
-
-    res.status(201).json({
-      success: true,
-      message: 'Usuário registrado com sucesso'
-    });
+    
+    res.status(201).json({ message: 'Usuário registrado com sucesso' });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: 'Erro ao registrar usuário'
-    });
+    res.status(500).json({ error: 'Erro ao registrar usuário' });
   }
 });
 
-// Login
+// Login simplificado
 router.post('/login', async (req, res) => {
-  const { email, senha } = req.body;
-
   try {
-    if (!email || !senha) {
-      return res.status(400).json({
-        success: false,
-        error: 'Email e senha são obrigatórios'
-      });
-    }
-
-    const [users] = await db.execute(
-      'SELECT * FROM usuarios WHERE email = ?',
-      [email]
-    );
-
-    const user = users[0];
-    if (!user) {
-      return res.status(400).json({
-        success: false,
-        error: 'Usuário não encontrado'
-      });
-    }
-
-    const valid = await bcrypt.compare(senha, user.senha_hash);
-    if (!valid) {
-      return res.status(401).json({
-        success: false,
-        error: 'Senha incorreta'
-      });
+    const { email, senha } = req.body;
+    const [users] = await db.execute('SELECT * FROM usuarios WHERE email = ?', [email]);
+    
+    if (users.length === 0 || !await bcrypt.compare(senha, users[0].senha_hash)) {
+      return res.status(401).json({ error: 'Credenciais inválidas' });
     }
 
     const token = jwt.sign(
-      {
-        id: user.id,
-        username: user.nome
-      },
+      { id: users[0].id, username: users[0].nome },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
 
-    res.json({
-      success: true,
-      token
-    });
+    res.json({ token });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: 'Erro ao fazer login'
-    });
+    res.status(500).json({ error: 'Erro ao fazer login' });
   }
 });
 
