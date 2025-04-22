@@ -1,7 +1,5 @@
 # 🐾 **PetCare Agendamentos** 🐶🐱
 
-![Banner Petshop](https://example.com/petshop-banner.jpg) *(imagem ilustrativa)*
-
 ## ✨ **Sistema Completo de Agendamento para PetShops**
 
 O **PetCare** é uma solução moderna para gerenciamento de agendamentos em petshops, oferecendo:
@@ -91,29 +89,6 @@ frontend/index.html
 
 ---
 
-## 🌟 **Recursos Avançados**
-
-```mermaid
-graph TD
-  A[Cliente] -->|Faz login| B[Painel]
-  B --> C[Agenda Serviço]
-  C --> D{Envia Foto?}
-  D -->|Sim| E[Processa Imagem]
-  D -->|Não| F[Finaliza Agendamento]
-  E --> F
-```
-
----
-
-## 📞 **Suporte**
-
-Encontrou algum problema? [Abra uma issue](https://github.com/seu-usuario/petshop-agendamentos/issues) ou nos contate:
-
-✉️ contato@petshop.com  
-📞 (11) 9876-5432
-
----
-
 ## 📜 **Licença**
 
 Distribuído sob licença MIT. Veja `LICENSE` para mais informações.
@@ -124,18 +99,6 @@ Distribuído sob licença MIT. Veja `LICENSE` para mais informações.
   <p>Feito com ❤️ por <strong>Equipe PetCare</strong></p>
   <img src="https://img.shields.io/github/stars/seu-usuario/petshop-agendamentos?style=social">
 </div>
-
----
-
-### 🎨 **Pré-visualização do Sistema**
-
-![Tela de Agendamento](https://example.com/screen1.jpg) *(imagem ilustrativa)*  
-*Interface intuitiva para agendamento de serviços*
-
-![Painel Administrativo](https://example.com/screen2.jpg) *(imagem ilustrativa)*  
-*Painel completo para gestão do petshop*
-
-> **Dica:** Todos os formulários possuem validação em tempo real! ✨
 
 ---
 
