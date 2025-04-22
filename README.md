@@ -97,7 +97,6 @@ Distribuído sob licença MIT. Veja `LICENSE` para mais informações.
 
 <div align="center">
   <p>Feito com ❤️ por <strong>Vivi</strong></p>
-  <img src="https://img.shields.io/github/stars/vivikari">
 </div>
 
 ---
