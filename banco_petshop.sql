@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS petshop CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE petshop;
 
--- Tabela de usuários (simplificada)
+-- Tabela de usuários
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -11,7 +11,7 @@ CREATE TABLE usuarios (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
--- Tabela de pets (simplificada)
+-- Tabela de pets
 CREATE TABLE pets (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE pets (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- Tabela de serviços (fixos para o sistema básico)
+-- Tabela de serviços
 CREATE TABLE servicos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(50) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE servicos (
     preco DECIMAL(10,2) NOT NULL
 ) ENGINE=InnoDB;
 
--- Tabela de agendamentos (principal)
+-- Tabela de agendamentos
 CREATE TABLE agendamentos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     pet_id INT NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE agendamentos (
     FOREIGN KEY (servico_id) REFERENCES servicos(id)
 ) ENGINE=InnoDB;
 
--- Inserção dos serviços básicos
+-- Inserção dos serviços
 INSERT INTO servicos (nome, descricao, preco) VALUES 
 ('Banho', 'Banho completo com produtos premium', 50.00),
 ('Tosa', 'Tosa higiênica ou padrão da raça', 70.00),
