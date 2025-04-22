@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import upload from './uploadConfig.js';
 import authRoutes from './routes/authRoutes.js';
 import agendamentoRoutes from './routes/agendamentoRoutes.js';
 
