@@ -97,8 +97,8 @@ Distribuído sob licença MIT. Veja `LICENSE` para mais informações.
 
 <div align="center">
   <p>Feito com ❤️ por <strong>Vivi</strong></p>
+  **🐶 Seu petshop merece esse upgrade!** 🐱
 </div>
 
 ---
 
-**🐶 Seu petshop merece esse upgrade!** 🐱
