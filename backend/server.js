@@ -1,30 +1,31 @@
 import express from 'express';
 import cors from 'cors';
-import authRoutes from './routes/authRoutes.js';
 import agendamentoRoutes from './routes/agendamentoRoutes.js';
 
 const app = express();
 
-// Middlewares
-app.use(cors());
+// Middlewares essenciais
+app.use(cors({
+    origin: 'http://localhost:5500', // Ajuste para a porta do seu frontend
+    credentials: true
+}));
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
 // Rotas
-app.use('/auth', authRoutes);        // Login e Registro
-app.use('/agendamentos', agendamentoRoutes); // Agendamentos protegidos 
+app.use('/api/agendamentos', agendamentoRoutes);
 
-// Página de status simples
-app.get('/', (req, res) => {
-  res.send('Servidor de Agendamento de Banhos funcionando!');
+// Rota de teste de upload
+app.post('/api/upload-test', (req, res) => {
+    console.log('Recebido upload de teste');
+    res.json({ success: true });
 });
 
 // Iniciar servidor
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`🚀 Servidor rodando em http://localhost:${port}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
 });
-
 
 //para conectar o nodemon usar:
 //npx nodemon server.js

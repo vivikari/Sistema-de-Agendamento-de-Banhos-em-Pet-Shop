@@ -13,10 +13,13 @@
         <div class="container header-content">
             <div class="logo">PetShop</div>
             <div class="user-menu">
-                <span>Olá, Maria</span>
+                <span id="userName">Olá, Usuário</span>
                 <div class="avatar">
                     <i class="fas fa-user"></i>
                 </div>
+                <button id="logoutBtn" class="btn-icon">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
             </div>
         </div>
     </header>
@@ -27,7 +30,7 @@
             <aside class="sidebar">
                 <ul class="nav-menu">
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="index.html" class="nav-link">
                             <i class="fas fa-home"></i>
                             <span>Dashboard</span>
                         </a>
@@ -39,236 +42,179 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="meus-pets.html" class="nav-link">
                             <i class="fas fa-paw"></i>
                             <span>Meus Pets</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="minha-conta.html" class="nav-link">
                             <i class="fas fa-user"></i>
                             <span>Minha Conta</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Sair</span>
                         </a>
                     </li>
                 </ul>
             </aside>
 
-            <!-- Conteúdo principal -->
+            <!-- Main Content -->
             <main class="content">
                 <div class="page-header">
-                    <h1 class="page-title">Meus Agendamentos</h1>
-                    <button id="novoAgendamentoBtn" class="btn btn-primary">
-                        <i class="fas fa-plus"></i>
-                        Novo Agendamento
-                    </button>
+                    <h1 class="page-title">Novo Agendamento</h1>
                 </div>
 
-                <!-- Filtros -->
-                <div class="filters">
-                    <div class="filter-group">
-                        <label class="filter-label">Status</label>
-                        <select class="filter-select">
-                            <option>Todos</option>
-                            <option>Pendentes</option>
-                            <option>Confirmados</option>
-                            <option>Cancelados</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label class="filter-label">Data Inicial</label>
-                        <input type="date" class="filter-input">
-                    </div>
-                    <div class="filter-group">
-                        <label class="filter-label">Data Final</label>
-                        <input type="date" class="filter-input">
-                    </div>
-                    <div class="filter-group">
-                        <label class="filter-label">Pet</label>
-                        <select class="filter-select">
-                            <option>Todos</option>
-                            <option>Rex</option>
-                            <option>Luna</option>
-                            <option>Thor</option>
-                        </select>
-                    </div>
-                </div>
+                <!-- Message Display -->
+                <div id="message" class="message" style="display: none;"></div>
 
-                <!-- Lista de agendamentos -->
-                <div class="agendamentos-list">
-                    <!-- Agendamento 1 -->
-                    <div class="agendamento-card">
-                        <div class="agendamento-header">
-                            <div class="pet-info">
-                                <img src="https://images.unsplash.com/photo-1586671267731-da2cf3ceeb80?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80" alt="Rex" class="pet-avatar">
-                                <div>
-                                    <h3 class="pet-name">Rex</h3>
-                                    <p class="pet-breed">Golden Retriever</p>
-                                </div>
+                <!-- Appointment Form -->
+                <form id="agendamentoForm" enctype="multipart/form-data">
+                    <!-- Pet Information Section -->
+                    <fieldset class="form-section">
+                        <legend><i class="fas fa-paw"></i> Dados do Pet</legend>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="petNome">Nome do Pet *</label>
+                                <input type="text" id="petNome" name="petNome" required>
                             </div>
-                            <span class="agendamento-status status-confirmado">Confirmado</span>
-                        </div>
-                        <div class="agendamento-details">
-                            <div class="detail-item">
-                                <span class="detail-label">Data</span>
-                                <span class="detail-value">15/10/2023 - 14:00</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Serviço</span>
-                                <span class="detail-value">Banho e Tosa</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Duração</span>
-                                <span class="detail-value">1h 30min</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Valor</span>
-                                <span class="detail-value">R$ 80,00</span>
+                            
+                            <div class="form-group">
+                                <label for="petTipo">Tipo *</label>
+                                <select id="petTipo" name="petTipo" required>
+                                    <option value="">Selecione</option>
+                                    <option value="cachorro">Cachorro</option>
+                                    <option value="gato">Gato</option>
+                                    <option value="outro">Outro</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="agendamento-actions">
-                            <button class="btn-icon" title="Editar">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn-icon" title="Cancelar">
-                                <i class="fas fa-times"></i>
-                            </button>
-                            <button class="btn-icon" title="WhatsApp">
-                                <i class="fab fa-whatsapp"></i>
-                            </button>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="petRaca">Raça *</label>
+                                <input type="text" id="petRaca" name="petRaca" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="petIdade">Idade (anos)</label>
+                                <input type="number" id="petIdade" name="petIdade" min="0" max="30">
+                            </div>
                         </div>
+                        
+                        <div class="form-group">
+                            <label for="petObservacoes">Observações sobre o pet</label>
+                            <textarea id="petObservacoes" name="petObservacoes" rows="2"></textarea>
+                        </div>
+                    </fieldset>
+                    
+                    <!-- Image Upload Section -->
+                    <fieldset class="form-section">
+                        <legend><i class="fas fa-camera"></i> Foto do Pet</legend>
+                        
+                        <div class="upload-container">
+                            <div class="upload-preview" id="uploadPreview">
+                                <i class="fas fa-paw"></i>
+                                <span>Nenhuma imagem selecionada</span>
+                            </div>
+                            
+                            <div class="upload-actions">
+                                <input type="file" id="petImagem" name="imagem" accept="image/*" style="display: none;">
+                                <button type="button" class="btn btn-outline" id="btnSelecionarImagem">
+                                    <i class="fas fa-folder-open"></i> Selecionar
+                                </button>
+                                <button type="button" class="btn btn-danger" id="btnRemoverImagem" disabled>
+                                    <i class="fas fa-trash"></i> Remover
+                                </button>
+                            </div>
+                            
+                            <div class="upload-info">
+                                <small>Formatos aceitos: JPG, PNG (máx. 5MB)</small>
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                    <!-- Services Section -->
+                    <fieldset class="form-section">
+                        <legend><i class="fas fa-concierge-bell"></i> Serviços</legend>
+                        
+                        <div class="servicos-grid" id="servicosContainer">
+                            <!-- Services will be loaded dynamically -->
+                            <div class="loading-servicos">
+                                <i class="fas fa-spinner fa-spin"></i> Carregando serviços...
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="servicoObservacoes">Observações sobre o serviço</label>
+                            <textarea id="servicoObservacoes" name="servicoObservacoes" rows="2"></textarea>
+                        </div>
+                    </fieldset>
+                    
+                    <!-- Date/Time Section -->
+                    <fieldset class="form-section">
+                        <legend><i class="fas fa-calendar-alt"></i> Data e Horário</legend>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="agendamentoData">Data *</label>
+                                <input type="date" id="agendamentoData" name="agendamentoData" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="agendamentoHora">Horário *</label>
+                                <select id="agendamentoHora" name="agendamentoHora" required>
+                                    <option value="">Selecione</option>
+                                    <option value="08:00">08:00</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" id="btnVoltar">
+                            <i class="fas fa-arrow-left"></i> Voltar
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="btnAgendar">
+                            <i class="fas fa-calendar-check"></i> Agendar
+                        </button>
                     </div>
-
-                    <!-- Agendamento 2 -->
-                    <div class="agendamento-card">
-                        <div class="agendamento-header">
-                            <div class="pet-info">
-                                <img src="https://images.unsplash.com/photo-1594149929911-78975a43d4f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80" alt="Luna" class="pet-avatar">
-                                <div>
-                                    <h3 class="pet-name">Luna</h3>
-                                    <p class="pet-breed">Siamês</p>
-                                </div>
-                            </div>
-                            <span class="agendamento-status status-pendente">Pendente</span>
-                        </div>
-                        <div class="agendamento-details">
-                            <div class="detail-item">
-                                <span class="detail-label">Data</span>
-                                <span class="detail-value">20/10/2023 - 10:30</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Serviço</span>
-                                <span class="detail-value">Banho Completo</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Duração</span>
-                                <span class="detail-value">1h</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Valor</span>
-                                <span class="detail-value">R$ 60,00</span>
-                            </div>
-                        </div>
-                        <div class="agendamento-actions">
-                            <button class="btn-icon" title="Editar">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn-icon" title="Cancelar">
-                                <i class="fas fa-times"></i>
-                            </button>
-                            <button class="btn-icon" title="WhatsApp">
-                                <i class="fab fa-whatsapp"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                </form>
             </main>
         </div>
     </div>
 
-    <!-- Modal de Novo Agendamento -->
-    <div id="agendamentoModal" class="modal">
-        <div class="modal-content">
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" style="display: none;">
+        <i class="fas fa-spinner fa-spin"></i>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
             <div class="modal-header">
-                <h2 class="modal-title">Novo Agendamento</h2>
+                <h3>Confirmar Agendamento</h3>
                 <button class="close-modal">&times;</button>
             </div>
-            <form id="agendamentoForm">
-                <div class="form-group">
-                    <label class="form-label">Pet</label>
-                    <select class="form-control" required>
-                        <option value="">Selecione um pet</option>
-                        <option value="1">Rex (Golden Retriever)</option>
-                        <option value="2">Luna (Siamês)</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Serviço</label>
-                    <select class="form-control" required>
-                        <option value="">Selecione um serviço</option>
-                        <option value="banho">Banho Completo</option>
-                        <option value="tosa">Tosa Higiênica</option>
-                        <option value="banho_tosa">Banho e Tosa</option>
-                        <option value="hidratacao">Hidratação</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Data e Horário</label>
-                    <input type="datetime-local" class="form-control" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Observações</label>
-                    <textarea class="form-control" rows="3"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Foto Atual do Pet (Opcional)</label>
-                    <input type="file" class="form-control" accept="image/*">
-                </div>
-                
-                <div class="form-actions">
-                    <button type="button" class="btn btn-cancel close-modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Agendar</button>
-                </div>
-            </form>
+            <div class="modal-body">
+                <p>Tem certeza que deseja confirmar este agendamento?</p>
+                <div id="resumoAgendamento"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" id="btnCancelarAgendamento">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnConfirmarAgendamento">Confirmar</button>
+            </div>
         </div>
     </div>
 
-    <script>
-        // Controle do Modal
-        const modal = document.getElementById('agendamentoModal');
-        const btnOpen = document.getElementById('novoAgendamentoBtn');
-        const btnClose = document.querySelector('.close-modal');
-        
-        btnOpen.addEventListener('click', () => {
-            modal.style.display = 'flex';
-        });
-        
-        btnClose.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-        
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-        
-        // Formulário de agendamento
-        document.getElementById('agendamentoForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Agendamento realizado com sucesso!');
-            modal.style.display = 'none';
-            // Aqui você adicionaria a lógica para enviar os dados para o backend
-        });
-    </script>
+    <!-- JavaScript -->
+    <script src="js/auth.js"></script>
+    <script src="js/agendamentos.js"></script>
 </body>
 </html>

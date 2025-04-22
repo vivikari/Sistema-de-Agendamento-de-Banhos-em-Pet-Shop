@@ -1,200 +1,195 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    // Verifica autenticação
-    if (!await checkAuth()) {
-        window.location.href = 'login.html';
-        return;
+document.addEventListener('DOMContentLoaded', function() {
+    // DOM Elements
+    const form = document.getElementById('agendamentoForm');
+    const petImagemInput = document.getElementById('petImagem');
+    const btnSelecionarImagem = document.getElementById('btnSelecionarImagem');
+    const btnRemoverImagem = document.getElementById('btnRemoverImagem');
+    const uploadPreview = document.getElementById('uploadPreview');
+    const servicosContainer = document.getElementById('servicosContainer');
+    const messageDiv = document.getElementById('message');
+
+    // State variables
+    let selectedServico = null;
+    let petImageFile = null;
+
+    // Initialize
+    initDatePicker();
+    loadServicos();
+    setupEventListeners();
+
+    function initDatePicker() {
+        const today = new Date();
+        document.getElementById('agendamentoData').min = today.toISOString().split('T')[0];
     }
 
-    // Carrega dados iniciais
-    await loadPets(); // Carrega pets para o select
-    await loadAgendamentos();
+    function setupEventListeners() {
+        // Image upload
+        btnSelecionarImagem.addEventListener('click', () => petImagemInput.click());
+        petImagemInput.addEventListener('change', handleImageUpload);
+        btnRemoverImagem.addEventListener('click', resetImageUpload);
+        
+        // Form submission
+        form.addEventListener('submit', handleFormSubmit);
+    }
 
-    // Adicione esta função para carregar os pets do usuário
-async function loadPets() {
-    try {
-        const response = await fetchWithAuth('/api/pets');
-        if (!response.ok) throw new Error('Erro ao carregar pets');
+    // Handle form submission
+    async function handleFormSubmit(e) {
+        e.preventDefault();
         
-        const pets = await response.json();
-        const petSelect = document.getElementById('petId');
+        if (!validateForm()) return;
+
+        const submitBtn = document.getElementById('btnAgendar');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Agendando...';
+
+        try {
+            const formData = new FormData(form);
+            formData.append('servicoId', selectedServico.id);
+            
+            // Debug: Log form data
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}:`, value instanceof File ? `${value.name} (${value.size} bytes)` : value);
+            }
+
+            const token = localStorage.getItem('token');
+            if (!token) throw new Error('Usuário não autenticado');
+
+            const response = await fetch('http://localhost:3000/api/agendamentos', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                    // Let browser set Content-Type for FormData
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || 'Erro ao agendar');
+            }
+
+            const result = await response.json();
+            console.log('Success:', result);
+            showMessage('Agendamento realizado com sucesso!', 'success');
+            
+            setTimeout(() => {
+                window.location.href = 'meus-agendamentos.html';
+            }, 2000);
+
+        } catch (error) {
+            console.error('Error:', error);
+            showMessage(error.message, 'error');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-calendar-check"></i> Confirmar Agendamento';
+        }
+    }
+
+    // Image handling
+    function handleImageUpload(e) {
+        const file = e.target.files[0];
+        if (!file) return;
         
-        petSelect.innerHTML = pets.map(pet => `
-            <option value="${pet.id}">${pet.nome} (${pet.raca})</option>
+        // Validation
+        if (!file.type.match('image/(jpeg|png)')) {
+            showMessage('Apenas imagens JPEG ou PNG são permitidas', 'error');
+            return;
+        }
+        
+        if (file.size > 5 * 1024 * 1024) {
+            showMessage('Imagem muito grande (máx. 5MB)', 'error');
+            return;
+        }
+        
+        petImageFile = file;
+        
+        // Preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            uploadPreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+            uploadPreview.querySelector('img').style.display = 'block';
+            btnRemoverImagem.disabled = false;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function resetImageUpload() {
+        petImagemInput.value = '';
+        petImageFile = null;
+        uploadPreview.innerHTML = '<i class="fas fa-paw"></i><span>Nenhuma imagem selecionada</span>';
+        btnRemoverImagem.disabled = true;
+    }
+
+    // Load services
+    async function loadServicos() {
+        try {
+            const response = await fetch('/api/servicos');
+            if (!response.ok) throw new Error('Erro ao carregar serviços');
+            
+            const servicos = await response.json();
+            renderServicos(servicos);
+        } catch (error) {
+            showMessage(error.message, 'error');
+        }
+    }
+
+    function renderServicos(servicos) {
+        servicosContainer.innerHTML = servicos.map(servico => `
+            <div class="servico-card" data-id="${servico.id}">
+                <h4>${servico.nome}</h4>
+                <p>${servico.descricao}</p>
+                <div class="preco">R$ ${servico.preco.toFixed(2)}</div>
+            </div>
         `).join('');
-        
-        // Adicione opção para novo pet
-        petSelect.innerHTML += '<option value="new">+ Cadastrar novo pet</option>';
-        
-    } catch (error) {
-        showMessage(error.message, 'error');
-    }
-}
 
-    // Configuração do formulário de agendamento
-    const agendamentoForm = document.getElementById('agendamentoForm');
-    if (agendamentoForm) {
-        agendamentoForm.addEventListener('submit', handleAgendamentoSubmit);
+        // Add click events
+        document.querySelectorAll('.servico-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.servico-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedServico = {
+                    id: this.dataset.id,
+                    nome: this.querySelector('h4').textContent
+                };
+            });
+        });
     }
 
-    // Preview da imagem
-    const imagemInput = document.getElementById('imagemPet');
-    if (imagemInput) {
-        imagemInput.addEventListener('change', handleImagePreview);
+    // Form validation
+    function validateForm() {
+        hideMessage();
+        
+        const requiredFields = [
+            'petNome', 'petTipo', 'petRaca',
+            'agendamentoData', 'agendamentoHora'
+        ];
+        
+        const missingFields = requiredFields.filter(field => {
+            return !document.getElementById(field).value.trim();
+        });
+        
+        if (missingFields.length > 0) {
+            showMessage('Preencha todos os campos obrigatórios', 'error');
+            return false;
+        }
+        
+        if (!selectedServico) {
+            showMessage('Selecione um serviço', 'error');
+            return false;
+        }
+        
+        return true;
+    }
+
+    // UI helpers
+    function showMessage(message, type) {
+        messageDiv.textContent = message;
+        messageDiv.className = `alert ${type}`;
+        messageDiv.style.display = 'block';
+        setTimeout(hideMessage, 5000);
+    }
+
+    function hideMessage() {
+        messageDiv.style.display = 'none';
     }
 });
-
-// Função unificada para verificar autenticação
-async function checkAuth() {
-    const token = localStorage.getItem('token');
-    if (!token) return false;
-
-    try {
-        const response = await fetch('/api/validate-token', {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        return response.ok;
-    } catch (error) {
-        return false;
-    }
-}
-
-// Função melhorada para carregar agendamentos
-async function loadAgendamentos() {
-    try {
-        showLoading(true);
-        
-        const response = await fetchWithAuth('/api/agendamentos');
-        if (!response.ok) throw new Error('Erro ao carregar agendamentos');
-        
-        const agendamentos = await response.json();
-        renderAgendamentos(agendamentos);
-        
-    } catch (error) {
-        showMessage(error.message, 'error');
-    } finally {
-        showLoading(false);
-    }
-}
-
-// Renderização otimizada de agendamentos
-function renderAgendamentos(agendamentos) {
-    const container = document.getElementById('agendamentosContainer');
-    
-    if (!agendamentos || agendamentos.length === 0) {
-        container.innerHTML = '<p class="no-results">Nenhum agendamento encontrado</p>';
-        return;
-    }
-
-    container.innerHTML = agendamentos.map(ag => `
-        <div class="agendamento-card" data-id="${ag.id}">
-            <div class="agendamento-image">
-                ${ag.imagem_path ? 
-                    `<img src="/uploads/${ag.imagem_path}" alt="${ag.pet_nome}">` : 
-                    '<div class="no-image"><i class="fas fa-paw"></i></div>'}
-            </div>
-            <div class="agendamento-info">
-                <h3>${ag.pet_nome} <small>${ag.raca}</small></h3>
-                <p><strong>Serviço:</strong> ${ag.servico}</p>
-                <p><strong>Data:</strong> ${formatDateTime(ag.data_agendamento)}</p>
-                <p><strong>Observações:</strong> ${ag.observacoes || 'Nenhuma'}</p>
-            </div>
-            <div class="agendamento-actions">
-                <button class="btn btn-outline" onclick="editAgendamento(${ag.id})">
-                    <i class="fas fa-edit"></i> Editar
-                </button>
-                <button class="btn btn-danger" onclick="confirmDelete(${ag.id})">
-                    <i class="fas fa-trash"></i> Excluir
-                </button>
-            </div>
-        </div>
-    `).join('');
-}
-
-// Atualize o manipulador de submit
-async function handleAgendamentoSubmit(e) {
-    e.preventDefault();
-    
-    try {
-        const petId = document.getElementById('petId').value;
-        
-        // Se for um novo pet, crie primeiro
-        if (petId === 'new') {
-            const novoPet = await cadastrarNovoPet();
-            if (!novoPet) return;
-        }
-        
-        // Resto da lógica de agendamento...
-    } catch (error) {
-        showMessage(error.message, 'error');
-    }
-}
-
-async function cadastrarNovoPet() {
-    // Implemente um modal ou formulário para cadastro rápido
-    const nome = prompt('Nome do novo pet:');
-    if (!nome) return null;
-    
-    const raca = prompt('Raça do pet:');
-    const response = await fetchWithAuth('/api/pets', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nome, raca })
-    });
-    
-    if (!response.ok) throw new Error('Erro ao cadastrar pet');
-    
-    return await response.json();
-}
-
-// Funções auxiliares melhoradas
-async function fetchWithAuth(url, options = {}) {
-    const token = localStorage.getItem('token');
-    const defaultHeaders = {
-        'Authorization': `Bearer ${token}`,
-        ...(options.body instanceof FormData ? {} : {'Content-Type': 'application/json'})
-    };
-    
-    return await fetch(url, {
-        ...options,
-        headers: {
-            ...defaultHeaders,
-            ...options.headers
-        }
-    });
-}
-
-function showMessage(message, type = 'success') {
-    const messageDiv = document.getElementById('message');
-    messageDiv.textContent = message;
-    messageDiv.className = `message ${type}`;
-    messageDiv.style.display = 'block';
-
-    setTimeout(() => {
-        messageDiv.style.opacity = '0';
-        setTimeout(() => messageDiv.style.display = 'none', 300);
-    }, 5000);
-}
-
-function showLoading(show) {
-    const loader = document.getElementById('loading-overlay');
-    loader.style.display = show ? 'flex' : 'none';
-}
-
-function handleImagePreview(e) {
-    const preview = document.getElementById('preview');
-    if (e.target.files && e.target.files[0]) {
-        preview.style.display = 'block';
-        preview.src = URL.createObjectURL(e.target.files[0]);
-    }
-}
-
-function formatDateTime(dateString) {
-    const options = { 
-        day: '2-digit', 
-        month: '2-digit', 
-        year: 'numeric',
-        hour: '2-digit', 
-        minute: '2-digit' 
-    };
-    return new Date(dateString).toLocaleString('pt-BR', options);
-}
