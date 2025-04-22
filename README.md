@@ -1,177 +1,142 @@
-# Sistema-de-Agendamento-de-Banhos-em-Pet-Shop
-📝 Descrição do Projeto
-Sistema completo para gerenciamento de agendamentos em petshop, incluindo:
+# 🐾 **PetCare Agendamentos** 🐶🐱
 
-Cadastro e autenticação de usuários
+![Banner Petshop](https://example.com/petshop-banner.jpg) *(imagem ilustrativa)*
 
-Gerenciamento de pets
+## ✨ **Sistema Completo de Agendamento para PetShops**
 
-Agendamento de serviços (banho, tosa, etc.)
+O **PetCare** é uma solução moderna para gerenciamento de agendamentos em petshops, oferecendo:
 
-Upload de fotos dos pets
+- 📅 Agendamento intuitivo de serviços  
+- 📱 Painel administrativo completo  
+- 🖼️ Upload de fotos dos pets  
+- 🔒 Autenticação segura  
 
-Painel administrativo
+---
 
-🛠 Tecnologias Utilizadas
-Frontend
-HTML5, CSS3, JavaScript
+## 🛠 **Tecnologias Utilizadas**
 
-Font Awesome (ícones)
+### **Frontend**
+<div style="display: flex; gap: 10px; flex-wrap: wrap;">
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+</div>
 
-Fetch API para comunicação com backend
+### **Backend**
+<div style="display: flex; gap: 10px; flex-wrap: wrap;">
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white">
+  <img src="https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white">
+  <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+</div>
 
-Backend
-Node.js com Express
+### **Segurança**
+<div style="display: flex; gap: 10px; flex-wrap: wrap;">
+  <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white">
+  <img src="https://img.shields.io/badge/Bcrypt-394D54?style=for-the-badge">
+</div>
 
-MySQL (banco de dados relacional)
+---
 
-JSON Web Tokens (JWT) para autenticação
+## 🚀 **Como Executar**
 
-Bcrypt para criptografia de senhas
+### **Pré-requisitos**
+- Node.js v16+
+- MySQL 8+
+- NPM ou Yarn
 
-Multer para upload de imagens
-
-Infraestrutura
-Banco de dados MySQL
-
-Servidor Node.js
-
-📋 Pré-requisitos
-Node.js (v14 ou superior)
-
-MySQL (v5.7 ou superior)
-
-NPM ou Yarn
-
-🚀 Como Executar o Projeto
-1. Configuração Inicial
-bash
+```bash
 # Clone o repositório
-git clone https://github.com/vivikari/Sistema-de-Agendamento-de-Banhos-em-Pet-Shop.git
-
-# Acesse a pasta do projeto
-cd petshop-agendamentos/backend
+git clone https://github.com/seu-usuario/petshop-agendamentos.git
 
 # Instale as dependências
+cd petshop-agendamentos/backend
 npm install
-2. Configuração do Banco de Dados
-Crie um banco de dados MySQL:
+```
 
-sql
-CREATE DATABASE petshop CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-Importe a estrutura inicial:
+### **Configuração**
+1. Crie um arquivo `.env` na pasta `backend`:
 
-bash
-mysql -u seu_usuario -p petshop < banco_petshop.sql
-3. Configuração do Ambiente
-Crie um arquivo .env na pasta backend com:
-
+```env
 DB_HOST=localhost
 DB_USER=root
-DB_PASSWORD=
-DB_DATABASE=petshop
-PORT=3000
-JWT_SECRET=segredo_seguro
+DB_PASSWORD=sua_senha
+DB_NAME=petshop
+JWT_SECRET=chave_secreta_aleatoria
+```
 
-4. Iniciando a Aplicação
-bash
-# Inicie o servidor backend
+2. Importe o banco de dados:
+```bash
+mysql -u root -p petshop < banco_petshop.sql
+```
+
+### **Iniciando o Sistema**
+```bash
+# Backend (Node.js)
 npm start
 
-# Acesse o frontend no navegador
-http://localhost:5500/frontend
-🗃 Estrutura do Banco de Dados
-Principais tabelas:
+# Frontend (abra no navegador)
+frontend/index.html
+```
 
-usuarios: Armazena dados dos clientes
+---
 
-pets: Registra os pets dos clientes
+## 📋 **Funcionalidades Principais**
 
-servicos: Catálogo de serviços oferecidos
+| Recurso          | Descrição                                  |
+|------------------|-------------------------------------------|
+| 🐕 Cadastro de Pets | Gerencie os pets de cada cliente          |
+| 🛁 Agendamentos   | Agende banhos, tosas e outros serviços    |
+| 📸 Galeria        | Armazene fotos dos pets                   |
+| 🔐 Acesso Seguro  | Autenticação com JWT e criptografia       |
 
-agendamentos: Registro de todos os agendamentos
+---
 
-🔐 Rotas da API
-Autenticação
-POST /api/register - Cadastro de usuário
+## 🌟 **Recursos Avançados**
 
-POST /api/login - Login e obtenção de token JWT
+```mermaid
+graph TD
+  A[Cliente] -->|Faz login| B[Painel]
+  B --> C[Agenda Serviço]
+  C --> D{Envia Foto?}
+  D -->|Sim| E[Processa Imagem]
+  D -->|Não| F[Finaliza Agendamento]
+  E --> F
+```
 
-Agendamentos
-POST /api/agendamentos - Cria novo agendamento
+---
 
-GET /api/agendamentos - Lista agendamentos do usuário
+## 📞 **Suporte**
 
-GET /api/agendamentos/:id - Detalhes de um agendamento
+Encontrou algum problema? [Abra uma issue](https://github.com/seu-usuario/petshop-agendamentos/issues) ou nos contate:
 
-PUT /api/agendamentos/:id - Atualiza agendamento
+✉️ contato@petshop.com  
+📞 (11) 9876-5432
 
-DELETE /api/agendamentos/:id - Cancela agendamento
+---
 
-📦 Estrutura de Arquivos
-/petshop-system
-├── /backend
-│   ├── /routes
-│   │    ├──agendamentoRoutes.js
-│   │    ├──authMiddleware.js
-│   │    └──authRoutes.js
-│   ├── server.js
-│   ├── db.js
-│   ├── package.json
-│   ├── uploadConfig.js
-│   └── .env
-├── /frontend
-│   ├── /css
-│   ├── /js
-│   │    ├──agendamentos.js
-│   │    ├──upload.js
-│   │    └──auth.js
-│   ├── index.html
-│   ├── login.html
-│   ├── register.html
-│   └── agendamentos.html
-├── /uploads
-├── banco_petshop.sql
-└── README.md
+## 📜 **Licença**
 
-📌 Exemplo de Uso
-Cadastro de Usuário:
+Distribuído sob licença MIT. Veja `LICENSE` para mais informações.
 
-javascript
-fetch('/api/register', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    nome: "João Silva",
-    email: "joao@email.com",
-    senha: "Senha@123"
-  })
-});
-Login:
+---
 
-javascript
-fetch('/api/login', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    email: "joao@email.com",
-    senha: "Senha@123"
-  })
-});
-Criar Agendamento:
+<div align="center">
+  <p>Feito com ❤️ por <strong>Equipe PetCare</strong></p>
+  <img src="https://img.shields.io/github/stars/seu-usuario/petshop-agendamentos?style=social">
+</div>
 
-javascript
-const formData = new FormData();
-formData.append('pet_id', 1);
-formData.append('servico_id', 3);
-formData.append('data_agendamento', '2023-12-25T10:00:00');
-formData.append('imagem', fileInput.files[0]);
+---
 
-fetch('/api/agendamentos', {
-  method: 'POST',
-  headers: { 'Authorization': `Bearer ${token}` },
-  body: formData
-});
+### 🎨 **Pré-visualização do Sistema**
 
-📜 Licença
-Este projeto está licenciado sob a licença MIT - veja o arquivo LICENSE para detalhes.
+![Tela de Agendamento](https://example.com/screen1.jpg) *(imagem ilustrativa)*  
+*Interface intuitiva para agendamento de serviços*
+
+![Painel Administrativo](https://example.com/screen2.jpg) *(imagem ilustrativa)*  
+*Painel completo para gestão do petshop*
+
+> **Dica:** Todos os formulários possuem validação em tempo real! ✨
+
+---
+
+**🐶 Seu petshop merece esse upgrade!** 🐱
